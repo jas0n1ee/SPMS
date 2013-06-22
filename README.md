@@ -1,2 +1,3 @@
-SPMS
+Student Performance Manage System(SPMS)
 ====
+
