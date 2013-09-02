@@ -16,5 +16,7 @@
 *.cpp~
 *.md~
 *.gitigonre~
+*swap
 *.h~
-./SPMS/*
+./SPMS
+./MFCApplication1

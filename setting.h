@@ -4,70 +4,102 @@
 struct perf
 {
 	int ID;
-	unsigned int sub_id;
+	short int sub_id;
 	char course_name[16];
-	unsigned int value;
-	unsigned int score;
-	bool faial_mark;
+	short int value;
+	short int score;
+	short int faial_mark;
 };
 //GPA包含了总学分和总gpa两个量，用于函数间的传输 
 struct GPA
 {
-	unsigned int total_value;
-	unsigned int total_score;
+	unsigned short int total_value;
+	unsigned short int total_score;
 };
 //stu作为student.dat中存储的唯一结构体类型，包含了一个学生的全部个人信息 
 //包括学生ID、年级、姓名、课程数、挂科学分 
 struct  stu
 {
 	int ID;
-	bool sex;
-	unsigned int grade;
-	char stu_name[10]; 
-	unsigned int course_num;
-	unsigned int fail_sum;
+	short int sex;
+	short int grade;
+	char stu_name[16]; 
+	short int course_num;
+	short int fail_sum;
 };
-//human类作为抽象类，提供 
-class human
+//man作为抽象类，提供basic information
+class man
 {
 	public:
-		human();  
-		human(stu p);
-		virtual ~human(); 
+		man();  
+		virtual ~man(); 
 		virtual void setname(char*)=0;
-		virtual void setsex(bool*)=0; 
-		virtual void setgrade(unsigned int)=0; 
+		virtual void setID(int)=0;
+		virtual void setsex(short int*)=0; 
+		virtual void setgrade(short int)=0; 
 	protected:
 		int ID;
-		bool sex;
-		unsigned int grade;
-		char stu_name[10]; 
+		short int sex;
+		short int grade;
+		char stu_name[16]; 
 };
+//class stuinfo is to record the academic infomations
+class stuinfo
+{
+	public:
+		stuinfo();
+		virtual ~stuinfo();
+		virtual void check_course(int)=0;
+		virtual void check_fail(int)=0;
+	protected:
+		short int course_num;
+		short int fail_sum;
+		short int degree;
+}
+//student is the class to combine every student's personal information
+class student:public man,public stuinfo
+{
+	public:
+		student();
+		student(stu p);
+		friend ostream& operator <<(ostream&, student &);
+}
 class performance
 {
 	public:
 		performance();
 		performance(perf p);
 		~performance();
+		friend ostream& operator< <<(ostream&, student &);
 	private:
-		int ID;
-		unsigned int sub_id;
+		int ID;			//ID linked with student's ID
+		short int sub_id;
 		char course_name[16];
-		unsigned int value;
-		unsigned int score;
-		bool faial_mark;
+		short int value;
+		short int score;
+		short int faial_mark;
 };
-//graduate类作为毕业生类，将根据grade、course_num和fail_sum判断是否获得学位 
-class graduate :virtual public student
+//system is the class provide commands to operate all the data. Also the object of it store all the data
+class system_SPMS
 {
 	public:
-		graduate();
-		graduate(stu p);
-		~graduate();
+		system_SPMS();
+		system_SPMS(char*);
+		void set_stu_data_add(char *);		//set the file address for student information
+		void set_perf_data_add(char *);		//set for performance data address
+		void add_student();
+		void add_performance()
+		bool search_stu(int);
+		bool search_perf(short int);
+
 	private:
-		bool degree; 
-};
-class 
+		char * stu_address;
+		char * perf_address;
+		student * data_stu;
+		performance * data_perf;
+}
+/*--------------function for class student----------------*/
+
 
 #define SETTING
 #endif
