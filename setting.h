@@ -75,6 +75,7 @@ class student:public man,public stuinfo
 		void setgrade(); 
 		void check_course();
 		void check_fail();
+		int returnid();
 		friend ostream& operator <<(ostream&, student &);
 		friend performance;
 		friend system_SPMS;
@@ -90,6 +91,8 @@ class performance
 		void setcoursescore();
 		void setstuid();
 		void setsubid();
+		int returnid();
+		short int returnsubid();
 		friend ostream& operator <<(ostream&, student &);
 		friend system_SPMS;
 		friend student;
@@ -113,7 +116,6 @@ class system_SPMS
 		void add_student();
 		void add_performance();
 		int search_stu(int);
-		int search_perf(short int);
 		friend student;
 		friend performance;
 	private:
@@ -141,7 +143,7 @@ void student::check_fail()
 	vector<performance>::iterator i;
 	for(i=(*temp).data_perf.begin();i!=(*temp).data_perf.end();i++)
 	{
-		if((*i).faial_mark) fail_sum+=(*i).value;
+		if((*i).ID==ID&&(*i).faial_mark) fail_sum+=(*i).value;
 	}
 	if(fail_sum>=20) degree=-1;
 }
@@ -200,6 +202,16 @@ void student::setgrade()
 	}
 	else return;
 }
+int student::returnid(){return ID;}
+student::student()
+{
+	setname();
+	setID();
+	setsex();
+	setgrade();
+	check_course();
+	check_fail();
+}
 /*---------function for performance-----*/
 performance::performance(perf t)
 {
@@ -210,7 +222,52 @@ performance::performance(perf t)
 	value=t.value;
 	strcpy(course_name,t.course_name);
 }
-
+int performance::returnid(){return ID;}
+short int performance::returnsubid(){return sub_id;}
+void performance::setcoursename()
+{
+	char t[]="Please Inpute the Course Name";
+	cout<<t;
+	cin>>t;
+	if(strlen(t)>15) 
+	{
+		cout<<"Erroe. Please Try again\n";
+		getchar();
+		setcoursename();
+	}
+	else strcpy(course_name,t);
+}
+void performance::setcoursescore()
+{
+	cin>>score;
+	if(score>100||score<0)
+	{
+		cout<<"Error. Try again.\n";
+		getchar();
+		setcoursescore();
+	}
+	if(score<60) faial_mark=1;
+}
+void performance::setcoursevalue()
+{
+	cin>>value;
+	if(value>15||value<0) 
+	{
+		cout<<"Error. Try again.\n";
+		getchar();
+		setcoursevalue();
+	}
+}
+void performance::setstuid()
+{
+	cout<<"Please Input Student ID:\n";
+	cin>>ID;
+}
+void performance::setsubid()
+{
+	cout<<"Please Input Course ID:\n";
+	cin>>sub_id;
+}
 /*---------function for system----------*/
 void system_SPMS::set_stu_data_add(char *t)
 {
@@ -248,20 +305,11 @@ int system_SPMS::search_stu(int t)
 	int j,flag=-1;
 	for(i=data_stu.begin(),j=0;i!=data_stu.end();i++,j++)
 	{
-		if((*i).ID==t) flag=j;
+		if((*i).returnid()==t) flag=j;
 	}
 	return flag;
 }
-int system_SPMS::search_perf(short int t)
-{
-	vector<performance>::iterator i;
-	int j,flag=-1;
-	for(i=data_perf.begin(),j=0;i!=data_perf.end();i++,j++)
-	{
-		if ((*i).sub_id==t) flag=j;
-	}
-	return flag;
-}
+
 #define SETTING
 #endif
 
