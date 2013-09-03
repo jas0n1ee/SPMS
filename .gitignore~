@@ -16,5 +16,6 @@
 *.cpp~
 *.md~
 *.gitigonre~
-
-./SPMS/*
+*swap
+*.h~
+SPMS/

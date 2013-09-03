@@ -17,6 +17,6 @@
 *.md~
 *.gitigonre~
 *swap
+*~
 *.h~
-./SPMS
-./MFCApplication1
+SPMS/
