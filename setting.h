@@ -117,10 +117,17 @@ class system_SPMS
 		void add_student();
 		void add_performance();
 		int search_stu(int);
+		int search_perf(int,short int);
+		void search_print_stu(int);
+		void search_print_stu(char *);
+		void search_print_perf(int);
+		void search_print_perf(short int);
+		void search_print_perf(int,short int);
 		bool delete_stu(int);
 		bool delete_perf(int,short int);
 		void print_menu();
 		void save();
+		void test();
 		friend class student;
 		friend class performance;
 		friend ostream& operator <<(ostream&, performance&);
@@ -464,6 +471,147 @@ void system_SPMS::save()
 	outfile2.close();
 }
 void system_SPMS::print_menu()
+{
+	int num;
+	system("clear");
+	cout<<"              iYr        .i;:           i       ;             :LJ     \n          iMBBBB7   JBMBBBBBBBBJ       BBB     BBB        :NBBBB1     \n        NBBBB.     .BBBBr    ZBBY     BBBB:   BBBB      jBBBB:        \n       BBB5          BBM     EBBX    BBBBBB  BBBBB     BBBM           \n      iBBBi.:::     iBB7   :BBBB    uBBiNBB,BB LBB.    BBBU :::       \n       LBBBBBBBBB:  8BBU,BBBBB:     BBB :BBBBF FBBr    :MBBBBBBBBY    \n              ZBBB  BBBBBBBr       BBBM  BBBB  UBBO           7BBB    \n            :ZBBB: .BBBL          .BBB:  BBB   LBBB         .1BBB2    \n     BBBBBBBBBBY   jBBB           BBBB    r    iBBB: EBBBBBBBBBS      \n     BBBBBBEr.     JBBB           MBBN          BBBJ GBBBBBOL.        \n";
+	cout<<"\t\t\t学生成绩管理系统 V1.0\n"
+		<<"\t1.Add Student\n"
+		<<"\t2.Add Score\n"
+		<<"\t3.Search Infomation"
+		<<"\t4.Change Detail\n"
+		<<">>";
+	cin>>num;
+	switch(num)
+	{
+		case 1:
+			system("clear");
+			add_student();
+			print_menu();
+			break;
+		case 2:
+			system("clear");
+			add_performance();
+			print_menu();
+			break;
+		case 3:
+			cout<<"Do you want to search Student(1) or Score(2) or Go back(3)\n>>";
+			cin>>num;
+			switch(num)
+			{
+				case 1:
+					cout<<"By ID(1) or by NAME(2)?\n>>";
+					cin>>num;
+					switch(num)
+					{
+						case 1:
+							cout<<"Enter ID\n>>;";
+							cin>>num;
+							search_print_stu(num);
+							break;
+						case 2:
+							char t[]="Enter Student Name\n>>";
+							cout<<t;
+							cin>>t;
+							search_print_stu(t);
+							break;
+						default:
+							break;
+					}
+					break;
+				case 2:
+					cout<<"By Student ID (1) or by Course ID(2) or Both(3)\n>>";
+					cin>>num;
+					switch(num)
+					{
+						case 1:
+							search_perf_print(int);
+							break;
+						case 2:
+							search_perf_print(char);
+							break;
+						case 3:
+							search_perf_print(int ,char);
+							break;
+						default:
+							cout<<"Error. Try again.\n";
+							break;
+					}
+					break;
+				case 3:
+					break;
+				default:	
+					cout<<"Error. Try again.\n";
+					getchar();
+					break;
+			}
+			print_menu();
+			break;
+		case 4:
+			char t[]="If you dont know the student ID and the course ID, go back to menu and search it.\nContinue?(y/n)";
+			int id;
+			short int subid;
+			cout<<t;
+			cin>>t;
+			if(t[0]!='y') break;
+			cout<<"Do you want to change Student information(1) or Course information(2)?\n>>";
+			cin>>num;
+			switch(num)
+			{
+				case 1:
+					cout<<"Enter student ID\n>>";
+					cin>>id;
+					if(search_stu(id)==-1) 
+					{
+						cout<<"ID incorretc! Go to the menu and search student information!\n";
+						break;
+					}
+					cout<<"Whitch information you want to change?\n1.Name\n2.Sex\n3.Grade\n>>";
+					cin>>num;
+					switch(num)
+					{
+						case 1:
+							data_stu[search_stu(id)].setname();
+							break;
+						case 2:
+							data_stu[search_stu(id)].setsex();
+							break;
+						case 3:
+							data_stu[search_stu(id)].setgrade();
+							break;
+						default:
+							cout<<"Error! ";
+							getchar();
+							break;
+					}
+				case 2:
+					cout<<"Enter Student ID\n>>";
+					cin>>id;
+					cout<<"Enter Course ID\n>>";
+					cin>>subid;
+					if(search_perf(id,subid)==-1)
+					{
+						cout<<"Incorrect! Go to the menu and search student information!\n";
+						break;
+					}
+					cout<<"You can only change course score but the fail lark will remain!";
+					data_perf[search_perf(id,subid)].setcoursescore();
+					break;
+				default:
+					cout<<"Error. Try again.\n";
+					getchar();
+					break;
+			}
+			print_menu();
+			break;
+		default:
+			cout<<"Error. Try again\n";
+			getchar();
+			print_menu();
+			break;
+	}
+}
+void system_SPMS::test()
 {
 	vector<student>::iterator i;
 	for(i=data_stu.begin();i!=data_stu.end();i++)

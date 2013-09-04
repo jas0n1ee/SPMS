@@ -8,8 +8,8 @@ int main()
 	system.set_stu_data_add(&stu_rout);
 	system.set_perf_data_add(&perf_rout);
 	system.init();
-	system.add_student();
 	system.print_menu();
+	system.add_student();
 	system.save();
 	return 0;
 }
