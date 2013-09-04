@@ -9,8 +9,8 @@ int main()
 	system.set_perf_data_add(&perf_rout);
 	system.init();
 	system.print_menu();
-	system.test();
-	system.save();
+	//system.test();
+	//system.save();
 	return 0;
 }
 

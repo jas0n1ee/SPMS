@@ -58,6 +58,7 @@ class stuinfo
 		virtual ~stuinfo(){}
 		virtual void check_course()=0;
 		virtual void check_fail()=0;
+		virtual GPA GPAcalc()=0;
 	protected:
 		short int course_num;
 		short int fail_sum;
@@ -78,6 +79,7 @@ class student:public man,public stuinfo
 		void check_course();
 		void check_fail();
 		void upgrade();
+		GPA GPAcalc();
 		stu returnstruct();
 		friend ostream& operator <<(ostream&, student &);
 		friend class performance;
@@ -288,6 +290,20 @@ void student::upgrade()
 		grade--;
 		degree=-1;
 	}
+}
+GPA student::GPAcalc()
+{
+	GPA t={0,0};
+	vector<performance>::iterator i;
+	for(i=(*temp).data_perf.begin();i!=(*temp).data_perf.end();i++)
+	{
+		if((*i).ID==ID)
+		{
+			t.total_value+=(*i).value;
+			t.total_score+=(*i).score*(*i).value;
+		}
+	}
+	return t;
 }
 /*---------function for performance-----*/
 performance::performance(perf t)
@@ -522,22 +538,23 @@ void system_SPMS::save()
 	for(j=data_perf.begin();j!=data_perf.end();j++) outfile2.write((char*)&(*j).returnstruct(),sizeof(perf));
 	outfile2.close();
 }
-
-
 void system_SPMS::print_menu()
 {
 	int num;
 	char t[]="Enter Student Name\n>>";
 	char t2[]="If you dont know the student ID and the course ID, go back to menu and search it.\nContinue?(y/n)";
+	GPA g;
+	vector<student>::iterator i;
 	system("cls");
 	cout<<"              iYr        .i;:           i       ;             :LJ     \n          iMBBBB7   JBMBBBBBBBBJ       BBB     BBB        :NBBBB1     \n        NBBBB.     .BBBBr    ZBBY     BBBB:   BBBB      jBBBB:        \n       BBB5          BBM     EBBX    BBBBBB  BBBBB     BBBM           \n      iBBBi.:::     iBB7   :BBBB    uBBiNBB,BB LBB.    BBBU :::       \n       LBBBBBBBBB:  8BBU,BBBBB:     BBB :BBBBF FBBr    :MBBBBBBBBY    \n              ZBBB  BBBBBBBr       BBBM  BBBB  UBBO           7BBB    \n            :ZBBB: .BBBL          .BBB:  BBB   LBBB         .1BBB2    \n     BBBBBBBBBBY   jBBB           BBBB    r    iBBB: EBBBBBBBBBS      \n     BBBBBBEr.     JBBB           MBBN          BBBJ GBBBBBOL.        \n";
-	cout<<"\t\t\t学生成绩管理系统 V1.0\n"
+	cout<<"\t\t\t学生成绩管理系统 V1.2\n"
 		<<"\t1.Add Student\n"
 		<<"\t2.Add Score\n"
 		<<"\t3.Search Infomation\n"
 		<<"\t4.Change Detail\n"
 		<<"\t5.Special function(Caution)\n"
 		<<"\t6.Exit&save\n"
+		<<"\t7.Exit\n"
 		<<">>";
 	cin>>num;
 	switch(num)
@@ -563,14 +580,16 @@ void system_SPMS::print_menu()
 					switch(num)
 					{
 						case 1:
-							cout<<"Enter ID\n>>;";
+							cout<<"Enter ID\n>>";
 							cin>>num;
 							search_print_stu(num);
+							getchar();getchar();
 							break;
 						case 2:
 							cout<<t;
 							cin>>t;
 							search_print_stu(t);
+							getchar();getchar();
 							break;
 						default:
 							break;
@@ -586,11 +605,13 @@ void system_SPMS::print_menu()
 							cout<<"Enter Student ID\n>>";
 							cin>>num;
 							search_print_perf(num);
+							getchar();getchar();
 							break;
 						case 2:
 							cout<<"Enter Course ID\n>>";
 							cin>>cid;
 							search_print_perf(cid);
+							getchar();getchar();
 							break;
 						case 3:
 							cout<<"Enter Student ID\n>>";
@@ -598,6 +619,7 @@ void system_SPMS::print_menu()
 							cout<<"Enter Course ID\n>>";
 							cin>>cid;
 							search_print_perf(num,cid);
+							getchar();getchar(); 
 							break;
 						default:
 							cout<<"Error. Try again.\n";
@@ -674,13 +696,54 @@ void system_SPMS::print_menu()
 			print_menu();
 			break;
 		case 5:
+			system("cls");
+			short int x;
+			cout<<"Special Function\n1.Upgrade All Student\n2.Delete Student\n3.Delete Course\n4.Calculate GPA \n5.Go Back\n>>";
+			cin>>num;
+			switch (num)
+			{
+			case 1:
+				for(i=data_stu.begin();i!=data_stu.end();i++) (*i).upgrade();
+				break;
+			case 2:
+				cout<<"Enter Student ID\n>>";
+				cin>>num;
+				delete_stu(num);
+				break;
+			case 3:
+				cout<<"Enter Student ID\n>>";
+				cin>>num;
+				cout<<"Enter Course ID\n>>";
+				cin>>x;
+				delete_perf(num,x);
+				break;
+			case 4:
+				cout<<"Enter Student ID\n>>";
+				cin>>num;
+				if(search_stu(num)==-1)
+				{
+					cout<<"Student Not found!\n";
+					getchar();getchar();
+					break;
+				}
+				g=data_stu[search_stu(num)].GPAcalc();
+				cout<<"\nTotal Credit:\t"<<g.total_value
+					<<"\nGPA:\t"<<g.total_score/(float)g.total_value<<endl;
+				break;
+			case 5:
+				break;
+			case 6:
+				for(i=data_stu.begin();i!=data_stu.end();i++) (*i).sex=1-(*i).sex;
+				break;
+			default:
+				break;
+			}
+			print_menu();
 			break;
 		case 6:
+			save();
 			break;
 		default:
-			cout<<"Error. Try again\n";
-			getchar();
-			print_menu();
 			break;
 	}
 }
