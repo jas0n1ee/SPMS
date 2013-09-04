@@ -380,8 +380,7 @@ performance::performance()
 }
 ostream& operator <<(ostream&,performance &t)
 {
-	cout<<"StudentName:\t"<<(*temp).data_stu[(*temp).search_stu(t.ID)];
-	cout<<"\nCourse ID:\t"<<t.sub_id<<"\nCourse Credit:\t"<<t.value<<"\nScore:\t"<<t.score<<"\nFailMark:\t";
+	cout<<"Course ID:\t"<<t.sub_id<<"\nCourse Credit:\t"<<t.value<<"\nScore:\t"<<t.score<<"\nFailMark:\t";
 	if(t.faial_mark) cout<<"Yes\n\n";
 	else cout<<"No\n\n";
 	return cout;
@@ -467,7 +466,7 @@ void system_SPMS::search_print_stu(char *name)
 {
 	vector<student>::iterator i;
 	for(i=data_stu.begin();i!=data_stu.end();i++)
-		if(strcmp((*i).stu_name,name)) cout<<*i;
+		if(strcmp((*i).stu_name,name)==0) cout<<*i;
 }
 void system_SPMS::search_print_perf(int id)
 {
@@ -547,7 +546,7 @@ void system_SPMS::print_menu()
 	vector<student>::iterator i;
 	system("cls");
 	cout<<"              iYr        .i;:           i       ;             :LJ     \n          iMBBBB7   JBMBBBBBBBBJ       BBB     BBB        :NBBBB1     \n        NBBBB.     .BBBBr    ZBBY     BBBB:   BBBB      jBBBB:        \n       BBB5          BBM     EBBX    BBBBBB  BBBBB     BBBM           \n      iBBBi.:::     iBB7   :BBBB    uBBiNBB,BB LBB.    BBBU :::       \n       LBBBBBBBBB:  8BBU,BBBBB:     BBB :BBBBF FBBr    :MBBBBBBBBY    \n              ZBBB  BBBBBBBr       BBBM  BBBB  UBBO           7BBB    \n            :ZBBB: .BBBL          .BBB:  BBB   LBBB         .1BBB2    \n     BBBBBBBBBBY   jBBB           BBBB    r    iBBB: EBBBBBBBBBS      \n     BBBBBBEr.     JBBB           MBBN          BBBJ GBBBBBOL.        \n";
-	cout<<"\t\t\t学生成绩管理系统 V1.2\n"
+	cout<<"\t\t\t学生成绩管理系统 V1.3\n"
 		<<"\t1.Add Student\n"
 		<<"\t2.Add Score\n"
 		<<"\t3.Search Infomation\n"
@@ -581,15 +580,16 @@ void system_SPMS::print_menu()
 					{
 						case 1:
 							cout<<"Enter ID\n>>";
-							cin>>num;
+							cin>>num;							system("cls");
 							search_print_stu(num);
-							getchar();getchar();
+							getchar();getchar();getchar();
 							break;
 						case 2:
 							cout<<t;
 							cin>>t;
+							system("cls");
 							search_print_stu(t);
-							getchar();getchar();
+							getchar();getchar();getchar();
 							break;
 						default:
 							break;
@@ -604,22 +604,25 @@ void system_SPMS::print_menu()
 						case 1:
 							cout<<"Enter Student ID\n>>";
 							cin>>num;
+							system("cls");
 							search_print_perf(num);
-							getchar();getchar();
+							getchar();getchar();getchar();
 							break;
 						case 2:
 							cout<<"Enter Course ID\n>>";
 							cin>>cid;
+							system("cls");
 							search_print_perf(cid);
-							getchar();getchar();
+							getchar();getchar();getchar();
 							break;
 						case 3:
 							cout<<"Enter Student ID\n>>";
 							cin>>num;
 							cout<<"Enter Course ID\n>>";
 							cin>>cid;
+							system("cls");
 							search_print_perf(num,cid);
-							getchar();getchar(); 
+							getchar();getchar(); getchar();
 							break;
 						default:
 							cout<<"Error. Try again.\n";
@@ -675,6 +678,7 @@ void system_SPMS::print_menu()
 							getchar();
 							break;
 					}
+					break;
 				case 2:
 					cout<<"Enter Student ID\n>>";
 					cin>>id;
