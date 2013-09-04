@@ -182,7 +182,7 @@ void student::setID()
 	{
 		cout<<"Please Input Student's ID Number:\n";
 		cin>>ID;
-		if((*temp).search_stu(ID))
+		if((*temp).search_stu(ID)!=-1)
 		{
 			cout<<"Error:ID already exist\n";
 			getchar();
@@ -192,7 +192,7 @@ void student::setID()
 }	
 void student::setID_auto()
 {
-	if((*temp).search_stu((*temp).id_start)) 
+	if((*temp).search_stu((*temp).id_start)!=-1) 
 	{
 		(*temp).id_start++;
 		setID_auto();
@@ -380,7 +380,7 @@ void system_SPMS::init()
 	perf t_perf;
 	int stu_sum,perf_sum;
 	t=time(NULL);
-	id_start=1000*(t/31104000+1969);
+	id_start=1000*(t/31104000+1969)+1;
 	ifstream infile(*stu_address,ios::binary|ios::in|ios::ate);
 	stu_sum=infile.tellg()/sizeof(stu);
 	infile.seekg(ios::beg);
@@ -397,7 +397,7 @@ void system_SPMS::init()
 	for(int j=0;j<perf_sum;j++)
 	{
 		infile2.read((char *)&t_perf,sizeof(perf));
-		//data_perf.push_back(performance(t_perf));
+		data_perf.push_back(performance(t_perf));
 		cout<<j+1<<"item(s) read\n";
 	}	
 	infile2.close();
