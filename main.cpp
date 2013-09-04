@@ -9,6 +9,7 @@ int main()
 	system.set_perf_data_add(&perf_rout);
 	system.init();
 	system.add_student();
+	system.print_menu();
 	system.save();
 	return 0;
 }

@@ -72,6 +72,7 @@ class student:public man,public stuinfo
 		~student(){}
 		void setname();
 		void setID();
+		void setID_auto();
 		void setsex(); 
 		void setgrade(); 
 		void check_course();
@@ -145,12 +146,14 @@ void student::check_course()
 void student::check_fail()
 {
 	fail_sum=0;
+	degree=0;
 	vector<performance>::iterator i;
 	for(i=(*temp).data_perf.begin();i!=(*temp).data_perf.end();i++)
 	{
 		if((*i).ID==ID&&(*i).faial_mark) fail_sum+=(*i).value;
 	}
 	if(fail_sum>=20) degree=-1;
+	if(course_num>170) degree=1;
 }
 student::student(stu p)
 {
@@ -174,10 +177,10 @@ void student::setID()
 	char t[]="Do you want to auto init Student ID?(y/n)\n";
 	cout<<t;
 	cin>>t;
-	if(t[0]=='y') ID=++(*temp).id_start;
+	if(t[0]=='y') setID_auto();
 	else
 	{
-		cout<<"Please Input Student's ID Number:";
+		cout<<"Please Input Student's ID Number:\n";
 		cin>>ID;
 		if((*temp).search_stu(ID))
 		{
@@ -187,13 +190,22 @@ void student::setID()
 		}
 	}
 }	
+void student::setID_auto()
+{
+	if((*temp).search_stu((*temp).id_start)) 
+	{
+		(*temp).id_start++;
+		setID_auto();
+	}
+	else ID=(*temp).id_start;
+}
 void student::setsex()
 {
-	cout<<"Please Choose the Student's Sex : \n 1.Male\t2.Female\n";
+	cout<<"Please Choose the Student's Sex : \£ºn0.Male\t1.Female\n";
 	cin>>sex;
 	if(sex!=1&&sex!=0) 
 	{
-		cout<<"Error. Please try again";
+		cout<<"Error. Please try again\n";
 		getchar();
 		system("clear");
 		setsex();
@@ -206,7 +218,7 @@ void student::setgrade()
 	cin>>grade;
 	if(grade<1||grade>4)
 	{
-		cout<<"Error. Please try again";
+		cout<<"Error. Please try again\n";
 		getchar();
 		system("clear");
 		setgrade();
@@ -227,7 +239,7 @@ ostream& operator<<(ostream&,student& t)
 	cout<<"Name:\t"<<t.stu_name<<"\nID:\t"<<t.ID;
 	switch(t.sex)
 	{
-	case 1:
+	case 0:
 		cout<<"\nSex:\tMale";
 		break;
 	default:
@@ -237,13 +249,13 @@ ostream& operator<<(ostream&,student& t)
 	switch (t.degree)
 	{
 	case 1:
-		cout<<"\nStatus:\tGraduated";
+		cout<<"\nStatus:\tGraduated\n\n";
 		break;
 	case 0:
-		cout<<"\nStatus:\tUndergraduate";
+		cout<<"\nStatus:\tUndergraduate\n\n";
 		break;
 	default:
-		cout<<"\nStatus:\tDrop out";
+		cout<<"\nStatus:\tDrop out\n\n";
 		break;
 	}
 	return cout;
@@ -450,6 +462,12 @@ void system_SPMS::save()
 	fstream outfile2(*perf_address,ios::out|ios::trunc|ios::binary);
 	for(j=data_perf.begin();j!=data_perf.end();j++) outfile2.write((char*)&(*j).returnstruct(),sizeof(perf));
 	outfile2.close();
+}
+void system_SPMS::print_menu()
+{
+	vector<student>::iterator i;
+	for(i=data_stu.begin();i!=data_stu.end();i++)
+		cout<<*i;
 }
 #define SETTING
 #endif
