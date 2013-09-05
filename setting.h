@@ -144,7 +144,7 @@ class system_SPMS
 		vector<performance> data_perf;
 		int id_start;
 };
-/*--------------Unsure settings--------------------------*/
+/*--------------settings--------------------------*/
 system_SPMS * temp;
 /*--------------function for class student----------------*/
 void student::check_course()
@@ -426,14 +426,15 @@ performance::performance()
 }
 ostream& operator <<(ostream&,performance &t)
 {
-	cout<<"Course ID:\t"<<t.sub_id<<"\nCourse Credit:\t"<<t.value<<"\nScore:\t"<<t.score<<"\nFailMark:\t";
+	cout<<"Student ID:\t"<<t.ID;
+	cout<<"\nCourse ID:\t"<<t.sub_id<<"\nCourse Credit:\t"<<t.value<<"\nScore:\t\t"<<t.score<<"\nFailMark:\t";
 	if(t.faial_mark) cout<<"Yes\n\n";
 	else cout<<"No\n\n";
 	return cout;
 }
 ofstream& operator <<(ofstream& out,performance &t)
 {
-	out<<"Course ID:\t"<<t.sub_id<<"\nCourse Credit:\t"<<t.value<<"\nScore:\t"<<t.score<<"\nFailMark:\t";
+	out<<"Course ID:\t"<<t.sub_id<<"\nCourse Credit:\t"<<t.value<<"\nScore:\t\t"<<t.score<<"\nFailMark:\t";
 	if(t.faial_mark) out<<"Yes\n\n";
 	else out<<"No\n\n";
 	return out;
@@ -467,16 +468,6 @@ void system_SPMS::init()
 	int stu_sum,perf_sum;
 	t=time(NULL);
 	id_start=1000*(t/31104000+1969)+1;
-	ifstream infile(*stu_address,ios::binary|ios::in|ios::ate);
-	stu_sum=infile.tellg()/sizeof(stu);
-	infile.seekg(ios::beg);
-	for(int i=0;i<stu_sum;i++)
-	{
-		infile.read((char *)&t_stu,sizeof(stu));
-		data_stu.push_back(student(t_stu));
-		cout<<i+1<<"item(s) read\n";
-	}
-	infile.close();
 	ifstream infile2(*perf_address,ios::binary|ios::in|ios::ate);
 	perf_sum=infile2.tellg()/sizeof(perf);
 	infile2.seekg(ios::beg);
@@ -487,6 +478,16 @@ void system_SPMS::init()
 		cout<<j+1<<"item(s) read\n";
 	}	
 	infile2.close();
+	ifstream infile(*stu_address,ios::binary|ios::in|ios::ate);
+	stu_sum=infile.tellg()/sizeof(stu);
+	infile.seekg(ios::beg);
+	for(int i=0;i<stu_sum;i++)
+	{
+		infile.read((char *)&t_stu,sizeof(stu));
+		data_stu.push_back(student(t_stu));
+		cout<<i+1<<"item(s) read\n";
+	}
+	infile.close();
 }
 int system_SPMS::search_stu(int t)
 {
@@ -599,7 +600,7 @@ void system_SPMS::print_menu()
 	vector<student>::iterator i;
 	system("cls");
 	cout<<"              iYr        .i;:           i       ;             :LJ     \n          iMBBBB7   JBMBBBBBBBBJ       BBB     BBB        :NBBBB1     \n        NBBBB.     .BBBBr    ZBBY     BBBB:   BBBB      jBBBB:        \n       BBB5          BBM     EBBX    BBBBBB  BBBBB     BBBM           \n      iBBBi.:::     iBB7   :BBBB    uBBiNBB,BB LBB.    BBBU :::       \n       LBBBBBBBBB:  8BBU,BBBBB:     BBB :BBBBF FBBr    :MBBBBBBBBY    \n              ZBBB  BBBBBBBr       BBBM  BBBB  UBBO           7BBB    \n            :ZBBB: .BBBL          .BBB:  BBB   LBBB         .1BBB2    \n     BBBBBBBBBBY   jBBB           BBBB    r    iBBB: EBBBBBBBBBS      \n     BBBBBBEr.     JBBB           MBBN          BBBJ GBBBBBOL.        \n";
-	cout<<"\t\t\t学生成绩管理系统 V1.6\n"
+	cout<<"\t\t\t学生成绩管理系统 V1.7\n"
 		<<"\t1.Add Student\n"
 		<<"\t2.Add Score\n"
 		<<"\t3.Search Infomation\n"
@@ -636,14 +637,14 @@ void system_SPMS::print_menu()
 							cin>>num;
 							system("cls");
 							search_print_stu(num);
-							getchar();getchar();getchar();
+							getchar();getchar();
 							break;
 						case 2:
 							cout<<t;
 							cin>>t;
 							system("cls");
 							search_print_stu(t);
-							getchar();getchar();getchar();
+							getchar();getchar();
 							break;
 						default:
 							break;
@@ -660,14 +661,14 @@ void system_SPMS::print_menu()
 							cin>>num;
 							system("cls");
 							search_print_perf(num);
-							getchar();getchar();getchar();
+							getchar();getchar();
 							break;
 						case 2:
 							cout<<"Enter Course ID\n>>";
 							cin>>cid;
 							system("cls");
 							search_print_perf(cid);
-							getchar();getchar();getchar();
+							getchar();getchar();
 							break;
 						case 3:
 							cout<<"Enter Student ID\n>>";
@@ -676,7 +677,7 @@ void system_SPMS::print_menu()
 							cin>>cid;
 							system("cls");
 							search_print_perf(num,cid);
-							getchar();getchar(); getchar();
+							getchar();getchar(); 
 							break;
 						default:
 							cout<<"Error. Try again.\n";
@@ -787,6 +788,7 @@ void system_SPMS::print_menu()
 				g=data_stu[search_stu(num)].GPAcalc();
 				cout<<"\nTotal Credit:\t"<<g.total_value
 					<<"\nGPA:\t"<<g.total_score/(float)g.total_value<<endl;
+				getchar();getchar();
 				break;
 			case 5 :
 				system("cls");
