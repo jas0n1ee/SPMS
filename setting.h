@@ -1,4 +1,4 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<vector>
 #include<cstdlib>
 #include<fstream>
@@ -6,8 +6,8 @@
 #include<time.h>
 using namespace std;
 #ifndef SETTING
-//perf×÷ÎªÔÚperf.datÖĞ´æ´¢µÄÎ¨Ò»½á¹¹ÌåÀàĞÍ£¬°üº¬ÁËÑ§ÉúÈ«²¿µÄ³É¼¨ĞÅÏ¢ 
-//ÄÚÈİÎªÑ§ÉúID¡¢¿Î³Ì±àºÅ¡¢¿Î³ÌÃû³Æ¡¢¿Î³ÌÑ§·Ö¡¢¿Î³Ì³É¼¨¡¢ÊÇ·ñÖØĞŞ 
+//perfä½œä¸ºåœ¨perf.datä¸­å­˜å‚¨çš„å”¯ä¸€ç»“æ„ä½“ç±»å‹ï¼ŒåŒ…å«äº†å­¦ç”Ÿå…¨éƒ¨çš„æˆç»©ä¿¡æ¯ 
+//å†…å®¹ä¸ºå­¦ç”ŸIDã€è¯¾ç¨‹ç¼–å·ã€è¯¾ç¨‹åç§°ã€è¯¾ç¨‹å­¦åˆ†ã€è¯¾ç¨‹æˆç»©ã€æ˜¯å¦é‡ä¿® 
 struct perf
 {
 	int ID;
@@ -17,14 +17,14 @@ struct perf
 	short int score;
 	short int faial_mark;
 };
-//GPA°üº¬ÁË×ÜÑ§·ÖºÍ×ÜgpaÁ½¸öÁ¿£¬ÓÃÓÚº¯Êı¼äµÄ´«Êä 
+//GPAåŒ…å«äº†æ€»å­¦åˆ†å’Œæ€»gpaä¸¤ä¸ªé‡ï¼Œç”¨äºå‡½æ•°é—´çš„ä¼ è¾“ 
 struct GPA
 {
 	unsigned short int total_value;
 	unsigned short int total_score;
 };
-//stu×÷Îªstudent.datÖĞ´æ´¢µÄÎ¨Ò»½á¹¹ÌåÀàĞÍ£¬°üº¬ÁËÒ»¸öÑ§ÉúµÄÈ«²¿¸öÈËĞÅÏ¢ 
-//°üÀ¨Ñ§ÉúID¡¢Äê¼¶¡¢ĞÕÃû¡¢¿Î³ÌÊı¡¢¹Ò¿ÆÑ§·Ö 
+//stuä½œä¸ºstudent.datä¸­å­˜å‚¨çš„å”¯ä¸€ç»“æ„ä½“ç±»å‹ï¼ŒåŒ…å«äº†ä¸€ä¸ªå­¦ç”Ÿçš„å…¨éƒ¨ä¸ªäººä¿¡æ¯ 
+//åŒ…æ‹¬å­¦ç”ŸIDã€å¹´çº§ã€å§“åã€è¯¾ç¨‹æ•°ã€æŒ‚ç§‘å­¦åˆ† 
 struct  stu
 {
 	int ID;
@@ -34,7 +34,7 @@ struct  stu
 	short int course_num;
 	short int fail_sum;
 };
-//man×÷Îª³éÏóÀà£¬Ìá¹©basic information
+//manä½œä¸ºæŠ½è±¡ç±»ï¼Œæä¾›basic information
 class man
 {
 	public:
@@ -80,8 +80,10 @@ class student:public man,public stuinfo
 		void check_fail();
 		void upgrade();
 		GPA GPAcalc();
+		void GPAexport();
 		stu returnstruct();
 		friend ostream& operator <<(ostream&, student &);
+		friend ofstream& operator<<(ofstream& ,student& );
 		friend class performance;
 		friend class system_SPMS;
 };
@@ -98,6 +100,7 @@ class performance
 		void setsubid();
 		perf returnstruct();
 		friend ostream& operator <<(ostream&, performance&);
+		friend ofstream& operator <<(ofstream&,performance &);
 		friend class system_SPMS;
 		friend class student;
 	private:
@@ -270,6 +273,32 @@ ostream& operator<<(ostream&,student& t)
 	}
 	return cout;
 }
+ofstream& operator<<(ofstream& out,student& t)
+{
+	out<<"Name:\t"<<t.stu_name<<"\nID:\t"<<t.ID;
+	switch(t.sex)
+	{
+	case 0:
+		out<<"\nSex:\tMale";
+		break;
+	default:
+		out<<"\nSex:\tFemale";
+	}
+	out<<"\nGrade:\t"<<t.grade<<"\nTotal Credit:\t"<<t.course_num;
+	switch (t.degree)
+	{
+	case 1:
+		out<<"\nStatus:\tGraduated\n\n";
+		break;
+	case 0:
+		out<<"\nStatus:\tUndergraduate\n\n";
+		break;
+	default:
+		out<<"\nStatus:\tDrop out\n\n";
+		break;
+	}
+	return out;
+}
 stu student::returnstruct()
 {
 	stu t;
@@ -304,6 +333,23 @@ GPA student::GPAcalc()
 		}
 	}
 	return t;
+}
+void student::GPAexport()
+{
+	char t[12];
+	sprintf(t,"%d",ID);
+	char *rout=new char[strlen(stu_name)+strlen(t)+5];
+	strcpy(rout,t);
+	strcpy(rout+strlen(t),stu_name);
+	strcpy(rout+strlen(t)+strlen(stu_name),".txt");
+	ofstream out(rout,ios::out|ios::trunc);
+	out<<*this;
+	vector<performance>::iterator i;
+	for(i=(*temp).data_perf.begin();i!=(*temp).data_perf.end();i++)
+	{
+		if((*i).ID==ID) out<<*i;
+	}
+	out.close();
 }
 /*---------function for performance-----*/
 performance::performance(perf t)
@@ -384,6 +430,13 @@ ostream& operator <<(ostream&,performance &t)
 	if(t.faial_mark) cout<<"Yes\n\n";
 	else cout<<"No\n\n";
 	return cout;
+}
+ofstream& operator <<(ofstream& out,performance &t)
+{
+	out<<"Course ID:\t"<<t.sub_id<<"\nCourse Credit:\t"<<t.value<<"\nScore:\t"<<t.score<<"\nFailMark:\t";
+	if(t.faial_mark) out<<"Yes\n\n";
+	else out<<"No\n\n";
+	return out;
 }
 perf performance::returnstruct()
 {
@@ -546,7 +599,7 @@ void system_SPMS::print_menu()
 	vector<student>::iterator i;
 	system("cls");
 	cout<<"              iYr        .i;:           i       ;             :LJ     \n          iMBBBB7   JBMBBBBBBBBJ       BBB     BBB        :NBBBB1     \n        NBBBB.     .BBBBr    ZBBY     BBBB:   BBBB      jBBBB:        \n       BBB5          BBM     EBBX    BBBBBB  BBBBB     BBBM           \n      iBBBi.:::     iBB7   :BBBB    uBBiNBB,BB LBB.    BBBU :::       \n       LBBBBBBBBB:  8BBU,BBBBB:     BBB :BBBBF FBBr    :MBBBBBBBBY    \n              ZBBB  BBBBBBBr       BBBM  BBBB  UBBO           7BBB    \n            :ZBBB: .BBBL          .BBB:  BBB   LBBB         .1BBB2    \n     BBBBBBBBBBY   jBBB           BBBB    r    iBBB: EBBBBBBBBBS      \n     BBBBBBEr.     JBBB           MBBN          BBBJ GBBBBBOL.        \n";
-	cout<<"\t\t\tÑ§Éú³É¼¨¹ÜÀíÏµÍ³ V1.3\n"
+	cout<<"\t\t\tå­¦ç”Ÿæˆç»©ç®¡ç†ç³»ç»Ÿ V1.6\n"
 		<<"\t1.Add Student\n"
 		<<"\t2.Add Score\n"
 		<<"\t3.Search Infomation\n"
@@ -580,7 +633,8 @@ void system_SPMS::print_menu()
 					{
 						case 1:
 							cout<<"Enter ID\n>>";
-							cin>>num;							system("cls");
+							cin>>num;
+							system("cls");
 							search_print_stu(num);
 							getchar();getchar();getchar();
 							break;
@@ -702,7 +756,7 @@ void system_SPMS::print_menu()
 		case 5:
 			system("cls");
 			short int x;
-			cout<<"Special Function\n1.Upgrade All Student\n2.Delete Student\n3.Delete Course\n4.Calculate GPA \n5.Go Back\n>>";
+			cout<<"Special Function\n1.Upgrade All Student\n2.Delete Student\n3.Delete Course\n4.Calculate GPA \n5.Export Student's GPA document\n6.Go Back\n>>";
 			cin>>num;
 			switch (num)
 			{
@@ -734,9 +788,21 @@ void system_SPMS::print_menu()
 				cout<<"\nTotal Credit:\t"<<g.total_value
 					<<"\nGPA:\t"<<g.total_score/(float)g.total_value<<endl;
 				break;
-			case 5:
+			case 5 :
+				system("cls");
+				cout<<"Enter Student ID\n>>";
+				cin>>num;
+				if(search_stu(num)==-1)
+				{
+					cout<<"Error. Student not exists!\n";
+					getchar();
+					break;
+				}
+				data_stu[search_stu(num)].GPAexport();
 				break;
 			case 6:
+				break;
+			case 7:
 				for(i=data_stu.begin();i!=data_stu.end();i++) (*i).sex=1-(*i).sex;
 				break;
 			default:
