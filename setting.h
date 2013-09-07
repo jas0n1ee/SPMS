@@ -468,6 +468,8 @@ void system_SPMS::init()
 	int stu_sum,perf_sum;
 	t=time(NULL);
 	id_start=1000*(t/31104000+1969)+1;
+	data_perf.clear();
+	data_perf.clear ();
 	ifstream infile2(*perf_address,ios::binary|ios::in|ios::ate);
 	perf_sum=infile2.tellg()/sizeof(perf);
 	infile2.seekg(ios::beg);
@@ -561,7 +563,7 @@ void system_SPMS::search_print_perf(short int cid)
 		if((*i).sub_id==cid)
 		{
 			cout<<*i;
-			flag++
+			flag++;
 		}
 	}
 	if(flag==0) cout<<"No item match!\n";
