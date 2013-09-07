@@ -512,33 +512,73 @@ int system_SPMS::search_perf(int id,short int cid)
 }
 void system_SPMS::search_print_stu(int id)
 {
+	int flag=0;
 	vector<student>::iterator i;
 	for(i=data_stu.begin();i!=data_stu.end();i++)
-		if((*i).ID==id) cout<<*i;
+	{
+		if((*i).ID==id)
+		{	
+			cout<<*i;
+			flag++;
+		}
+	}
+	if(flag==0) cout<<"No item match!\n";
 }
 void system_SPMS::search_print_stu(char *name)
 {
+	int flag=0;
 	vector<student>::iterator i;
 	for(i=data_stu.begin();i!=data_stu.end();i++)
-		if(strcmp((*i).stu_name,name)==0) cout<<*i;
+	{
+		if(strcmp((*i).stu_name,name)==0)
+		{
+		       	cout<<*i;
+			flag++;
+		}
+	}
+	if(flag==0) cout<<"No item match!\n";
 }
 void system_SPMS::search_print_perf(int id)
 {
+	int flag=0;
 	vector<performance>::iterator i;
 	for(i=data_perf.begin();i!=data_perf.end();i++)
-		if((*i).ID==id) cout<<*i;
+	{
+		if((*i).ID==id)
+		{
+			cout<<*i;
+			flag++;
+		}
+	}
+	if(flag==0) cout<<"No item match!\n";
 }
 void system_SPMS::search_print_perf(short int cid)
 {
+	int flag=0;
 	vector<performance>::iterator i;
 	for(i=data_perf.begin();i!=data_perf.end();i++)
-		if((*i).sub_id==cid) cout<<*i;
+	{
+		if((*i).sub_id==cid)
+		{
+			cout<<*i;
+			flag++
+		}
+	}
+	if(flag==0) cout<<"No item match!\n";
 }
 void system_SPMS::search_print_perf(int id,short int cid)
 {
+	int flag=0;
 	vector<performance>::iterator i;
 	for(i=data_perf.begin();i!=data_perf.end();i++)
-		if((*i).ID==id&&(*i).sub_id==cid) cout<<*i;
+	{
+		if((*i).ID==id&&(*i).sub_id==cid)
+		{
+			cout<<*i;
+			flag++;
+		}
+	}
+	if(flag==0) cout<<"No item match!\n";
 }
 void system_SPMS::add_student()
 {
@@ -600,11 +640,11 @@ void system_SPMS::print_menu()
 	vector<student>::iterator i;
 	system("cls");
 	cout<<"              iYr        .i;:           i       ;             :LJ     \n          iMBBBB7   JBMBBBBBBBBJ       BBB     BBB        :NBBBB1     \n        NBBBB.     .BBBBr    ZBBY     BBBB:   BBBB      jBBBB:        \n       BBB5          BBM     EBBX    BBBBBB  BBBBB     BBBM           \n      iBBBi.:::     iBB7   :BBBB    uBBiNBB,BB LBB.    BBBU :::       \n       LBBBBBBBBB:  8BBU,BBBBB:     BBB :BBBBF FBBr    :MBBBBBBBBY    \n              ZBBB  BBBBBBBr       BBBM  BBBB  UBBO           7BBB    \n            :ZBBB: .BBBL          .BBB:  BBB   LBBB         .1BBB2    \n     BBBBBBBBBBY   jBBB           BBBB    r    iBBB: EBBBBBBBBBS      \n     BBBBBBEr.     JBBB           MBBN          BBBJ GBBBBBOL.        \n";
-	cout<<"\t\t\t学生成绩管理系统 V1.7\n"
+	cout<<"\t\t\t学生成绩管理系统 V1.8 Submit Version\n"
 		<<"\t1.Add Student\n"
 		<<"\t2.Add Score\n"
 		<<"\t3.Search Infomation\n"
-		<<"\t4.Change Detail\n"
+		<<"\t4.Change Information\n"
 		<<"\t5.Special function(Caution)\n"
 		<<"\t6.Exit&save\n"
 		<<"\t7.Exit\n"
